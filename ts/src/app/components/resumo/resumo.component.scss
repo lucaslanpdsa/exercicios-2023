@@ -1,0 +1,32 @@
+.resumo {
+  margin-bottom: 30px;
+  border: 1px solid #ECECEC;
+
+  &__topo {
+    border: 1px solid #ECECEC;
+    background-color: #FDF1EB;
+    color: #4E4E4E;
+    padding: 10px 15px;
+  }
+
+  &__texto {
+    padding: 15px;
+    font-family: Quicksand;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 23px;
+    letter-spacing: 0.02em;
+    text-align: left;
+
+    &--texto {
+      margin: 0;
+    }
+
+    .btn-show-more {
+      font-weight: 700;
+      line-height: 21px;
+      color: #ED7839;
+    }
+
+  }
+}

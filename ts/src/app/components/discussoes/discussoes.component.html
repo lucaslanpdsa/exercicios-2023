@@ -1,0 +1,75 @@
+<section class="discussoes">
+  <div class="discussoes__box-topo">
+    <div class="discussoes__topo">
+      <h3>Discussões</h3>
+    </div>
+    <div class="discussoes__corpo">
+      <div class="create_topic" *ngIf="MostrarSessaoBase">
+        <h4 class="create_topic--titulo">Compartilhe suas ideias ou dúvidas com os autores!</h4>
+      <ul class="create_topic--lista-de-imagens">
+        <li class="create_topic--lista-de-imagens--imagem"><img src="../../../assets/icone1.png"></li>
+        <li class="create_topic--lista-de-imagens--imagem"><img src="../../../assets/icone2.png"></li>
+        <li class="create_topic--lista-de-imagens--imagem"><img src="../../../assets/icone3.png"></li>
+      </ul>
+      <p class="create_topic--p">Sabia que o maior estímulo no desenvolvimento científico e cultural é a curiosidade? Deixe seus questionamentos ou sugestões para o autor!</p>
+      <button (click)="CriaTopico()" preventDefault class="btn create_topic--btn btn-create-topic">
+        <img class="btn create_topic--btn--img" src="../../../assets/icon - criar.png">
+        <p class="create_topic--btn--p">criar tópico</p>
+      </button>
+      </div>
+      <div class="formulario" *ngIf="mostrarCriateTopic">
+        <p class="formulario__text-topo">
+        Tem uma dúvida ou sugestão? Compartilhe seu feedback com os autores!
+        </p>
+        <form (ngSubmit)="submit()" [formGroup]="formulario" #FormDir="ngForm">
+          <label class="formulario__label" for="assunto">Assunto</label>
+          <input required class="formulario__input--assunto subject formulario__input" formControlName="assunto" type="text" id="assunto" placeholder="Defina um tópico sucinto para notificar os autores..." >
+          <label class="formulario__label" for="conteudo">Conteúdo</label>
+          <input required class="formulario__input--conteudo formulario__input" formControlName="conteudo" type="text" id="conteudo">
+          <div class="formulario__submit">
+            <div class="formulario__submit--retangulo"></div>
+            <button class="formulario__submit--btn" type="submit">Enviar</button>
+          </div>
+        </form>
+      </div>
+      <div class="topicoEnviado create_topic" *ngIf="formfoiEnviado">
+        <h4 class="create_topic--titulo">Seu tópico foi enviado com sucesso! :D</h4>
+        <p class="create_topic--p">Agradecemos por sua contribuição, uma notificação será enviada ao seu email assim que seu tópico for respondido!</p>
+        <p class="topicoEnviado__descubra">Descubra outros trabalhos!</p>
+        <button (click)="CriaTopico()" preventDefault class="btn create_topic--btn btn-create-topic">
+        <img class="btn create_topic--btn--img" src="../../../assets/icon - criar.png">
+        <p class="create_topic--btn--p">criar novo tópico</p>
+        </button>
+      </div>
+    </div>
+  </div>
+  <ul class="topicos">
+    <li class="topico answered-topic" *ngFor="let topicos of topicos">
+      <div class="novoTopico" *ngIf="!TopicoFoiAnalisado">
+        <img src="../../../assets/.png" alt="">
+        <p>Aguardando feedback dos autores</p>
+        <p class="topico__EditarTopico">Editar tópico</p>
+      </div>
+      <div class="comments-container">
+        <h3 class="topico__assunto ops-topic-subject">{{topicos.assunto}}</h3>
+        <p class="topico__nome">{{topicos.nome}}</p>
+        <p class="topico__conteudo">{{topicos.conteudo}}</p>
+      </div>
+      <img src="../../../assets/card-footer.png">
+    </li>
+    <li class="topico answered-topic">
+      <div class="comments-container">
+        <h3 class="topico__assunto ops-topic-subject">Assunto da pergunta aparece aqui</h3>
+        <p class="topico__nome">Carlos Henrique Santos</p>
+        <p class="topico__conteudo">Comecinho da pergunta aparece aqui resente relato inscreve-se no campo da análise da dimensão e impacto de processo formativo situado impacto de processo formativo processo...</p>
+      </div>
+      <img src="../../../assets/card-footer.png">
+    </li>
+    <li class="topico ">
+      <h3 class="topico__assunto">Assunto da pergunta aparece aqui</h3>
+      <p class="topico__nome">Carlos Henrique Santos</p>
+      <p class="topico__conteudo">Comecinho da pergunta aparece aqui resente relato inscreve-se no campo da análise da dimensão e impacto de processo formativo situado impacto de processo formativo processo...</p>
+      <img src="../../../assets/card-footer.png">
+    </li>
+  </ul>
+</section>
