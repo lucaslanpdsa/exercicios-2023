@@ -32,9 +32,6 @@ ts/typings
 .DS_Store
 Thumbs.db
 
-# Screenshots
-ts/cypress/screenshots
-
 # Miscellaneous
 dart/**/*.class
 dart/**/*.log

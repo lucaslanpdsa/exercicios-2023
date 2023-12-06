@@ -28,17 +28,22 @@ export class DiscussoesComponent implements OnInit {
   }
 
   submit() {
-    this.TopicoFoiAnalisado = false
-    this.mostrarCriateTopic = false
-    this.topicos.push({
-      assunto: this.formulario.get("assunto")?.value,
-      conteudo: this.formulario.get("conteudo")?.value
-    })
-    this.formfoiEnviado = true
+    this.TopicoFoiAnalisado = false;
+    this.mostrarCriateTopic = false;
 
-    setInterval(() => {
-      this.TopicoFoiAnalisado = true
-    }, 3000)
+    const novoTopico = {
+      assunto: this.formulario.get("assunto")?.value,
+      conteudo: this.formulario.get("conteudo")?.value,
+      topicoFoiAnalisado: this.TopicoFoiAnalisado
+    };
+
+    this.topicos.push(novoTopico);
+    this.formfoiEnviado = true;
+
+    // Define um temporizador para cada novo tópico
+    setTimeout(() => {
+      novoTopico.topicoFoiAnalisado = true;
+    }, 3000);
   }
 
   ngOnInit(): void {

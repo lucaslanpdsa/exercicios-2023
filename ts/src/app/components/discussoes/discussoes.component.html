@@ -45,7 +45,7 @@
   </div>
   <ul class="topicos">
     <li class="topico answered-topic" *ngFor="let topicos of topicos">
-      <div class="novoTopico" *ngIf="!TopicoFoiAnalisado">
+      <div class="novoTopico" *ngIf="!topicos.topicoFoiAnalisado">
         <img src="../../../assets/.png" alt="">
         <p>Aguardando feedback dos autores</p>
         <p class="topico__EditarTopico">Editar tópico</p>
