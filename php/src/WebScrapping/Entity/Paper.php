@@ -4,13 +4,11 @@ namespace Chuva\Php\WebScrapping\Entity;
 
 /**
  * The Paper class represents the row of the parsed data.
- * A classe Paper representa a linha dos dados analisados.
  */
 class Paper {
 
   /**
    * Paper Id.
-   * Identificação do papel.
    *
    * @var int
    */
