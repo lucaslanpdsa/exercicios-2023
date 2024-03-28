@@ -1,27 +1,26 @@
 <?php
 
-namespace Chuva\Php\WebScrapping;
+namespace Exercicio2023\WebScrapping; // Corrigido o namespace
 
-use Exercicio2023\WebScrapping\Scrapper;
-
-/**
- * Runner for the Webscrapping exercice.
- * Corredor para o exercício Webscrapping.
- */
 class Main {
 
-  /**
-   * Main runner, instantiates a Scrapper and runs.
-   * Corredor principal, instancia um Scrapper e executa.
-   */
   public static function run(): void {
-    $dom = new \DOMDocument('1.0', 'utf-8');
-    $dom->loadHTMLFile(__DIR__ . '/../../assets/origin.html');
+    $html = file_get_contents(__DIR__ . '/../../../webscrapping/origin.html');
 
-    $data = (new Scrapper())->scrap($dom);
+    // Tratamento de erro para o carregamento do HTML
+    if ($html === false) {
+      echo "Erro ao carregar o arquivo HTML.\n";
+      return;
+    }
 
-    // Write your logic to save the output file bellow.
-    //  Escreva sua lógica para salvar o arquivo de saída abaixo.
+    $dom = new \DOMDocument();
+    // Tratamento de erro para o carregamento do HTML no DOMDocument
+    if (!$dom->loadHTML($html)) {
+      echo "Erro ao carregar o HTML no DOMDocument.\n";
+      return;
+    }
+
+    $data = (new Scrapper())->scrapeAndCreateSpreadsheet($dom); // Corrigido o método chamado
 
     print_r($data);
   }
