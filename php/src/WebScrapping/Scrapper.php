@@ -12,20 +12,22 @@ require_once 'vendor/autoload.php';
 
 /**
  * Does the scrapping of a webpage.
+ *
  * Realiza o scraping de uma página da web.
  */
 class Scrapper {
 
   /**
    * Loads paper information from the HTML and returns the array with the data.
+   *
    * Carrega informações do artigo do HTML e retorna o array com os dados.
    */
   public function scrap(\DOMDocument $dom): array {
-    // Corrigido o nome da variável de $Pappers para $Papers.
-    $Papers = [];
+    // Corrigido o nome da variável de $Pappers para $papers.
+    $papers = [];
 
     /**
-     *
+     *  extrai os elementos pela class
      */
     function getElement($dom, $class) {
       $elementosComClasse = $dom->getElementsByTagName('*');
@@ -46,15 +48,15 @@ class Scrapper {
     $id = getElement($dom, 'volume-info');
 
     /**
-     *
+     * extrai os authores
      */
     function getAuthors($dom) {
       $divAuthors = $dom->getElementsByTagName('div');
       $allAuthors = [];
 
-      foreach ($divAuthors as $Author) {
-        if ($Author->hasAttribute('class') && $Author->getAttribute('class') === 'authors') {
-          $spans = $Author->getElementsByTagName('span');
+      foreach ($divAuthors as $author) {
+        if ($author->hasAttribute('class') && $author->getAttribute('class') === 'authors') {
+          $spans = $author->getElementsByTagName('span');
           $authorsOfPapper = [];
 
           foreach ($spans as $span) {
@@ -84,12 +86,12 @@ class Scrapper {
       $paper = new Paper($paperId, $title[$index], $type[$index], $authorsForPaper);
 
       // Adicionar o objeto Paper ao array de Papers.
-      $Papers[] = $paper;
+      $papers[] = $paper;
     }
 
     // Retornar o array de Papers após o loop.
-    var_dump($Papers);
-    return $Papers;
+    var_dump($papers);
+    return $papers;
   }
 
 }
