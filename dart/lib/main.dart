@@ -1,7 +1,22 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const ChuvaDart());
+  runApp(const Home());
+}
+
+class Home extends StatefulWidget {
+  const Home({super.key});
+
+  @override
+  // ignore: no_logic_in_create_state
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  @override
+  Widget build(BuildContext context) {
+    return const Scaffold();
+  }
 }
 
 class ChuvaDart extends StatelessWidget {
