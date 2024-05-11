@@ -30,7 +30,15 @@ class Agenda extends StatefulWidget {
 }
 
 class _AgendaState extends State<Agenda> {
-  int selectedDay = -1; // Inicialmente nenhum dia selecionado
+  int selectedDay = 26; // Inicialmente nenhum dia selecionado
+
+  List atividades = [
+    ['atividade do dia 26', 'dsads', 'eawdsdasd'],
+    ['atividade do dia 27'],
+    ['atividade do dia 28'],
+    ['atividade do dia 29'],
+    ['atividade do dia 30']
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -175,6 +183,30 @@ class _AgendaState extends State<Agenda> {
                     ),
                 ],
               ),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                for (var atividade in atividades[selectedDay - 26])
+                  Container(
+                    padding: const EdgeInsets.all(8.0),
+                    margin: const EdgeInsets.symmetric(
+                        vertical: 5.0, horizontal: 20.0),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10.0),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 2,
+                          blurRadius: 5,
+                          offset: const Offset(0, 3),
+                        ),
+                      ],
+                    ),
+                    child: Text(atividade),
+                  ),
+              ],
             ),
           ],
         ),
