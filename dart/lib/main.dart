@@ -1,22 +1,7 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const Home());
-}
-
-class Home extends StatefulWidget {
-  const Home({super.key});
-
-  @override
-  // ignore: no_logic_in_create_state
-  State<Home> createState() => _HomeState();
-}
-
-class _HomeState extends State<Home> {
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold();
-  }
+  runApp(const ChuvaDart());
 }
 
 class ChuvaDart extends StatelessWidget {
@@ -26,133 +11,174 @@ class ChuvaDart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Flutter Project',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(
+            seedColor: const Color.fromARGB(255, 66, 80, 208)),
         useMaterial3: true,
       ),
-      home: const Calendar(),
+      home: const Agenda(),
     );
   }
 }
 
-class Calendar extends StatefulWidget {
-  const Calendar({super.key});
+class Agenda extends StatefulWidget {
+  const Agenda({super.key});
 
   @override
-  State<Calendar> createState() => _CalendarState();
+  State<Agenda> createState() => _AgendaState();
 }
 
-class _CalendarState extends State<Calendar> {
-  DateTime _currentDate = DateTime(2023, 11, 26);
-  bool _clicked = false;
-
-  void _changeDate(DateTime newDate) {
-    setState(() {
-      _currentDate = newDate;
-    });
-  }
+class _AgendaState extends State<Agenda> {
+  int selectedDay = -1; // Inicialmente nenhum dia selecionado
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text('Chuva ❤️ Flutter'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
+        backgroundColor: const Color.fromARGB(255, 77, 105, 143),
+        automaticallyImplyLeading: false,
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back_ios,
+            color: Colors.white,
+            size: 30,
+          ),
+          onPressed: () {
+            // Implemente aqui a ação ao pressionar o botão de voltar
+          },
+        ),
+        title: const Column(
+          children: [
+            Text(
+              'Chuva 💜 Flutter',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.white),
+            ),
+            Text(
               'Programação',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Color.fromARGB(200, 255, 255, 255)),
             ),
-            const Text(
-              'Nov',
-            ),
-            const Text(
-              '2023',
-            ),
-            OutlinedButton(
-              onPressed: () {
-                _changeDate(DateTime(2023, 11, 26));
-              },
-              child: Text(
-                '26',
-                style: Theme.of(context).textTheme.headlineMedium,
+          ],
+        ),
+        centerTitle: true,
+      ),
+      body: IntrinsicHeight(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(20.0),
+              decoration: const BoxDecoration(
+                color: Color.fromARGB(255, 77, 105, 143),
+              ),
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 5.0, horizontal: 15.0),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(50.0),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 2,
+                      blurRadius: 5,
+                      offset: const Offset(0, 3),
+                    ),
+                  ],
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(8.0),
+                      decoration: BoxDecoration(
+                        color: const Color.fromARGB(255, 55, 123, 213),
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      child: const Icon(
+                        Icons.calendar_today,
+                        color: Color.fromARGB(255, 11, 11, 11),
+                      ),
+                    ),
+                    const SizedBox(width: 10.0),
+                    const Expanded(
+                      child: Text(
+                        'Exibindo todas as atividades',
+                        style: TextStyle(
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-            OutlinedButton(
-              onPressed: () {
-                _changeDate(DateTime(2023, 11, 28));
-              },
-              child: Text(
-                '28',
-                style: Theme.of(context).textTheme.headlineMedium,
+            Container(
+              color: const Color.fromARGB(
+                  255, 58, 117, 220), // Cor de fundo da linha
+              child: Row(
+                children: [
+                  Positioned(
+                    left: 0,
+                    child: Container(
+                      padding: const EdgeInsets.all(2.0),
+                      color: Colors.white, // Cor de fundo do texto "NOV"
+                      child: const Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            'NOV',
+                            style: TextStyle(
+                              color: Colors.black, // Alterando para preto
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18.0,
+                            ),
+                          ),
+                          Text(
+                            '2023',
+                            style: TextStyle(
+                              color: Colors.black, // Alterando para preto
+                              fontWeight:
+                                  FontWeight.bold, // Deixando em negrito
+                              fontSize: 16.0,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  for (var day in [26, 27, 28, 29, 30])
+                    GestureDetector(
+                      onTap: () {
+                        // Ação a ser executada ao clicar no dia
+                        setState(() {
+                          selectedDay = day; // Atualiza o dia selecionado
+                        });
+                        print('Você clicou no dia $day');
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Text(
+                          '$day',
+                          style: TextStyle(
+                            color: selectedDay == day
+                                ? Colors
+                                    .white // Se o dia for selecionado, cor branca
+                                : const Color.fromARGB(
+                                    147, 255, 255, 255), // Senão, cor padrão
+                          ),
+                        ),
+                      ),
+                    ),
+                ],
               ),
             ),
-            if (_currentDate.day == 26)
-              OutlinedButton(
-                  onPressed: () {
-                    setState(() {
-                      _clicked = true;
-                    });
-                  },
-                  child: const Text('Mesa redonda de 07:00 até 08:00')),
-            if (_currentDate.day == 28)
-              OutlinedButton(
-                  onPressed: () {
-                    setState(() {
-                      _clicked = true;
-                    });
-                  },
-                  child: const Text('Palestra de 09:30 até 10:00')),
-            if (_currentDate.day == 26 && _clicked) const Activity(),
           ],
         ),
       ),
-    );
-  }
-}
-
-class Activity extends StatefulWidget {
-  const Activity({super.key});
-
-  @override
-  State<Activity> createState() => _ActivityState();
-}
-
-class _ActivityState extends State<Activity> {
-  bool _favorited = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Theme.of(context).colorScheme.inversePrimary,
-      child: Column(children: [
-        Text(
-          'Activity title',
-          style: Theme.of(context).textTheme.bodySmall,
-        ),
-        const Text('A Física dos Buracos Negros Supermassivos'),
-        const Text('Mesa redonda'),
-        const Text('Domingo 07:00h - 08:00h'),
-        const Text('Sthepen William Hawking'),
-        const Text('Maputo'),
-        const Text('Astrofísica e Cosmologia'),
-        ElevatedButton.icon(
-          onPressed: () {
-            setState(() {
-              _favorited = !_favorited;
-            });
-          },
-          icon: _favorited
-              ? const Icon(Icons.star)
-              : const Icon(Icons.star_outline),
-          label: Text(
-              _favorited ? 'Remover da sua agenda' : 'Adicionar à sua agenda'),
-        )
-      ]),
     );
   }
 }
