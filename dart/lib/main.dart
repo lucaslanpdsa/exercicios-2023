@@ -1,6 +1,10 @@
-import 'package:flutter/material.dart';
+import 'dart:io';
+import 'dart:math';
 
-void main() {
+import 'package:flutter/material.dart';
+import 'package:dio/dio.dart';
+
+void main() async {
   runApp(const ChuvaDart());
 }
 
@@ -165,7 +169,6 @@ class _AgendaState extends State<Agenda> {
                         setState(() {
                           selectedDay = day; // Atualiza o dia selecionado
                         });
-                        print('Você clicou no dia $day');
                       },
                       child: Container(
                         padding: const EdgeInsets.all(15.0),
@@ -189,12 +192,18 @@ class _AgendaState extends State<Agenda> {
               children: [
                 for (var atividade in atividades[selectedDay - 26])
                   Container(
-                    padding: const EdgeInsets.all(8.0),
+                    height: 80,
+                    padding: const EdgeInsets.all(10.0),
                     margin: const EdgeInsets.symmetric(
-                        vertical: 5.0, horizontal: 20.0),
+                        vertical: 5.0, horizontal: 10.0),
                     decoration: BoxDecoration(
+                      border: Border(
+                          left: BorderSide(
+                        width: 4,
+                        color: getRandomColor(),
+                      )),
                       color: Colors.white,
-                      borderRadius: BorderRadius.circular(10.0),
+                      borderRadius: BorderRadius.circular(3.0),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.grey.withOpacity(0.5),
@@ -213,4 +222,13 @@ class _AgendaState extends State<Agenda> {
       ),
     );
   }
+}
+
+getRandomColor() {
+  final Random random = Random();
+  final int r = random.nextInt(256);
+  final int g = random.nextInt(256);
+  final int b = random.nextInt(256);
+  // Retornar uma cor com os valores aleatórios
+  return Color.fromARGB(255, r, g, b);
 }

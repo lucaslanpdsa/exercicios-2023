@@ -44,3 +44,5 @@ void main() {
     });
   });
 }
+
+class Activity {}
