@@ -39,7 +39,7 @@ class Agenda extends StatefulWidget {
 class AgendaState extends State<Agenda> {
   int selectedDay = 26;
 
-  Map<String, dynamic> activities = {};
+  List<dynamic> activities = [];
 
   @override
   void initState() {
@@ -56,9 +56,19 @@ class AgendaState extends State<Agenda> {
 
       if (response.statusCode == 200) {
         setState(() {
-          activities = jsonDecode(response.body);
-          print(activities['data'].map((e) => e['title']));
+          final jsonData = jsonDecode(response.body);
+          final List<dynamic> allActivities = jsonData['data'];
           print('requisição feita');
+
+          for (final activity in allActivities) {
+            final data = activity['start'];
+
+            if (data.toString().contains('2023-11-$selectedDay')) {
+              setState(() {
+                activities.add(activity);
+              });
+            }
+          }
         });
       } else {
         throw Exception('Falha ao carregar os dados: ${response.statusCode}');
@@ -184,8 +194,13 @@ class AgendaState extends State<Agenda> {
                   ),
                   for (var day in [26, 27, 28, 29, 30])
                     GestureDetector(
-                      onTap: () {
-                        print(activities);
+                      onTap: () async {
+                        activities.clear();
+
+                        await fetchData();
+
+                        print(activities.map((e) => e['title']['pt-br']));
+
                         setState(() {
                           selectedDay = day; // Atualiza o dia selecionado
                         });
@@ -207,10 +222,13 @@ class AgendaState extends State<Agenda> {
                 ],
               ),
             ),
-            const Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [],
-            ),
+            Expanded(
+                child: SingleChildScrollView(
+                    child: Column(
+              children: activities
+                  .map((e) => Text('${e['title']['pt-br']}, ${e['start']}'))
+                  .toList(),
+            )))
           ],
         ),
       ),
