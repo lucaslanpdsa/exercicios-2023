@@ -1,8 +1,9 @@
-import 'dart:io';
-import 'dart:math';
+// ignore_for_file: avoid_print
 
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:dio/dio.dart';
 
 void main() async {
   runApp(const ChuvaDart());
@@ -30,19 +31,42 @@ class Agenda extends StatefulWidget {
   const Agenda({super.key});
 
   @override
-  State<Agenda> createState() => _AgendaState();
+  State<Agenda> createState() {
+    return AgendaState();
+  }
 }
 
-class _AgendaState extends State<Agenda> {
-  int selectedDay = 26; // Inicialmente nenhum dia selecionado
+class AgendaState extends State<Agenda> {
+  int selectedDay = 26;
 
-  List atividades = [
-    ['atividade do dia 26', 'dsads', 'eawdsdasd'],
-    ['atividade do dia 27'],
-    ['atividade do dia 28'],
-    ['atividade do dia 29'],
-    ['atividade do dia 30']
-  ];
+  Map<String, dynamic> activities = {};
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
+  Future<void> fetchData() async {
+    final url = Uri.parse(
+        'https://raw.githubusercontent.com/chuva-inc/exercicios-2023/master/dart/assets/activities.json');
+
+    try {
+      final response = await http.get(url);
+
+      if (response.statusCode == 200) {
+        setState(() {
+          activities = jsonDecode(response.body);
+          print(activities['data'].map((e) => e['title']));
+          print('requisição feita');
+        });
+      } else {
+        throw Exception('Falha ao carregar os dados: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Erro durante a requisição: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -133,39 +157,35 @@ class _AgendaState extends State<Agenda> {
                   255, 58, 117, 220), // Cor de fundo da linha
               child: Row(
                 children: [
-                  Positioned(
-                    left: 0,
-                    child: Container(
-                      padding: const EdgeInsets.all(2.0),
-                      color: Colors.white, // Cor de fundo do texto "NOV"
-                      child: const Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            'NOV',
-                            style: TextStyle(
-                              color: Colors.black, // Alterando para preto
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18.0,
-                            ),
+                  Container(
+                    padding: const EdgeInsets.all(2.0),
+                    color: Colors.white, // Cor de fundo do texto "NOV"
+                    child: const Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          'NOV',
+                          style: TextStyle(
+                            color: Colors.black, // Alterando para preto
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18.0,
                           ),
-                          Text(
-                            '2023',
-                            style: TextStyle(
-                              color: Colors.black, // Alterando para preto
-                              fontWeight:
-                                  FontWeight.bold, // Deixando em negrito
-                              fontSize: 16.0,
-                            ),
+                        ),
+                        Text(
+                          '2023',
+                          style: TextStyle(
+                            color: Colors.black, // Alterando para preto
+                            fontWeight: FontWeight.bold, // Deixando em negrito
+                            fontSize: 16.0,
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                   for (var day in [26, 27, 28, 29, 30])
                     GestureDetector(
                       onTap: () {
-                        // Ação a ser executada ao clicar no dia
+                        print(activities);
                         setState(() {
                           selectedDay = day; // Atualiza o dia selecionado
                         });
@@ -187,35 +207,9 @@ class _AgendaState extends State<Agenda> {
                 ],
               ),
             ),
-            Column(
+            const Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                for (var atividade in atividades[selectedDay - 26])
-                  Container(
-                    height: 80,
-                    padding: const EdgeInsets.all(10.0),
-                    margin: const EdgeInsets.symmetric(
-                        vertical: 5.0, horizontal: 10.0),
-                    decoration: BoxDecoration(
-                      border: Border(
-                          left: BorderSide(
-                        width: 4,
-                        color: getRandomColor(),
-                      )),
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(3.0),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          spreadRadius: 2,
-                          blurRadius: 5,
-                          offset: const Offset(0, 3),
-                        ),
-                      ],
-                    ),
-                    child: Text(atividade),
-                  ),
-              ],
+              children: [],
             ),
           ],
         ),
