@@ -12,8 +12,8 @@ jobs:
     env:
       IOS_DEVICE: 'iPhone 14 Pro Simulator (16.2)'
     steps:
-      # - name: List all simulators
-      #   run: xcrun xctrace list devices
+      - name: List all simulators
+        run: xcrun xctrace list devices
 
       - name: Start Simulator
         run: |
