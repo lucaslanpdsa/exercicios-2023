@@ -10,7 +10,7 @@ jobs:
   integration_test:
     runs-on: macos-latest
     env:
-      IOS_DEVICE: 'iPhone 14 Pro Simulator (16.2)'
+      IOS_DEVICE: 'iPhone 14 Pro Simulator (17.2)'
     steps:
       - name: List all simulators
         run: xcrun xctrace list devices
