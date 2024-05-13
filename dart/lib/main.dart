@@ -22,21 +22,21 @@ class ChuvaDart extends StatelessWidget {
             seedColor: const Color.fromARGB(255, 66, 80, 208)),
         useMaterial3: true,
       ),
-      home: const Agenda(),
+      home: const Calendar(),
     );
   }
 }
 
-class Agenda extends StatefulWidget {
-  const Agenda({super.key});
+class Calendar extends StatefulWidget {
+  const Calendar({super.key});
 
   @override
-  State<Agenda> createState() {
-    return AgendaState();
+  State<Calendar> createState() {
+    return CalendarState();
   }
 }
 
-class AgendaState extends State<Agenda> {
+class CalendarState extends State<Calendar> {
   int selectedDay = 26;
 
   List<dynamic> activities = [];
@@ -174,7 +174,7 @@ class AgendaState extends State<Agenda> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          'NOV',
+                          'Nov',
                           style: TextStyle(
                             color: Colors.black, // Alterando para preto
                             fontWeight: FontWeight.bold,
@@ -223,6 +223,14 @@ class AgendaState extends State<Agenda> {
               child: SingleChildScrollView(
                 child: Column(
                   children: activities.map((e) {
+                    String dataHoraStart = e['start'];
+                    // Converter a string para um objeto DateTime
+                    String parteInteressanteStart =
+                        dataHoraStart.substring(11, 16);
+
+                    String dataHoraEnd = e['end'];
+                    String parteInteressanteEnd = dataHoraEnd.substring(11, 16);
+
                     return Container(
                         alignment: Alignment.centerLeft,
                         padding: const EdgeInsets.all(10),
@@ -241,7 +249,7 @@ class AgendaState extends State<Agenda> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              '${e['type']['title']['pt-br']}',
+                              '${e['type']['title']['pt-br']} de $parteInteressanteStart até $parteInteressanteEnd',
                               style: const TextStyle(
                                 fontSize: 10, // Tamanho da fonte
                                 fontWeight: FontWeight.w500, // Peso da fonte

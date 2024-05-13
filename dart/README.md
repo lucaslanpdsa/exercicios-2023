@@ -32,28 +32,3 @@ flutter test --update-goldens integration_test/
 Não esqueca de commitar os screenshots que o teste gera, utilizaremos eles na correção do exercício.
 
 Pra facilitar sua vida, nosso repositório já vem com pronto pra consumo!
-for (var atividade in activities)
-                  Container(
-                    height: 80,
-                    padding: const EdgeInsets.all(10.0),
-                    margin: const EdgeInsets.symmetric(
-                        vertical: 5.0, horizontal: 10.0),
-                    decoration: BoxDecoration(
-                      border: Border(
-                          left: BorderSide(
-                        width: 4,
-                        color: getRandomColor(),
-                      )),
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(3.0),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          spreadRadius: 2,
-                          blurRadius: 5,
-                          offset: const Offset(0, 3),
-                        ),
-                      ],
-                    ),
-                    child: Text(atividade),
-                  ),
