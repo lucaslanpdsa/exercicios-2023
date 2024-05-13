@@ -59,7 +59,7 @@ class AgendaState extends State<Agenda> {
           final jsonData = jsonDecode(response.body);
           final List<dynamic> allActivities = jsonData['data'];
           print('requisição feita');
-
+          activities.clear();
           for (final activity in allActivities) {
             final data = activity['start'];
 
@@ -195,15 +195,12 @@ class AgendaState extends State<Agenda> {
                   for (var day in [26, 27, 28, 29, 30])
                     GestureDetector(
                       onTap: () async {
-                        activities.clear();
-
-                        await fetchData();
-
-                        print(activities.map((e) => e['title']['pt-br']));
-
                         setState(() {
                           selectedDay = day; // Atualiza o dia selecionado
                         });
+                        await fetchData();
+
+                        print(activities.map((e) => e['description']));
                       },
                       child: Container(
                         padding: const EdgeInsets.all(15.0),
@@ -223,12 +220,53 @@ class AgendaState extends State<Agenda> {
               ),
             ),
             Expanded(
-                child: SingleChildScrollView(
-                    child: Column(
-              children: activities
-                  .map((e) => Text('${e['title']['pt-br']}, ${e['start']}'))
-                  .toList(),
-            )))
+              child: SingleChildScrollView(
+                child: Column(
+                  children: activities.map((e) {
+                    return Container(
+                        alignment: Alignment.centerLeft,
+                        padding: const EdgeInsets.all(10),
+                        margin: const EdgeInsets.all(10.0),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(4.0),
+                          border: Border(
+                            left: BorderSide(
+                              color: getRandomColor(), // Cor da borda
+                              width: 4.0,
+                              // Largura da borda
+                            ),
+                          ),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              '${e['type']['title']['pt-br']}',
+                              style: const TextStyle(
+                                fontSize: 10, // Tamanho da fonte
+                                fontWeight: FontWeight.w500, // Peso da fonte
+                              ),
+                            ),
+                            Text(
+                              '${e['title']['pt-br']}',
+                              style: const TextStyle(
+                                fontSize: 15, // Tamanho da fonte
+                                fontWeight: FontWeight.w500, // Peso da fonte
+                              ),
+                            ),
+                            Text(
+                              '${e['people'].map((person) => person['name']).join(', ')}',
+                              style: const TextStyle(
+                                fontSize: 12, // Tamanho da fonte
+                                fontWeight: FontWeight.w300, // Peso da fonte
+                              ),
+                            )
+                          ],
+                        ));
+                  }).toList(),
+                ),
+              ),
+            )
           ],
         ),
       ),
@@ -236,11 +274,10 @@ class AgendaState extends State<Agenda> {
   }
 }
 
-getRandomColor() {
-  final Random random = Random();
-  final int r = random.nextInt(256);
-  final int g = random.nextInt(256);
-  final int b = random.nextInt(256);
-  // Retornar uma cor com os valores aleatórios
+Color getRandomColor() {
+  Random random = Random();
+  int r = random.nextInt(256);
+  int g = random.nextInt(256);
+  int b = random.nextInt(256);
   return Color.fromARGB(255, r, g, b);
 }
