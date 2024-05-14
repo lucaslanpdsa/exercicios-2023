@@ -1,9 +1,10 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, prefer_const_constructors
 
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'activityPage.dart';
 
 void main() async {
   runApp(const ChuvaDart());
@@ -58,15 +59,11 @@ class CalendarState extends State<Calendar> {
         setState(() {
           final jsonData = jsonDecode(response.body);
           final List<dynamic> allActivities = jsonData['data'];
-          print('requisição feita');
           activities.clear();
           for (final activity in allActivities) {
             final data = activity['start'];
-
             if (data.toString().contains('2023-11-$selectedDay')) {
-              setState(() {
-                activities.add(activity);
-              });
+              activities.add(activity);
             }
           }
         });
@@ -75,6 +72,13 @@ class CalendarState extends State<Calendar> {
       }
     } catch (e) {
       print('Erro durante a requisição: $e');
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content:
+              Text('Erro ao carregar atividades. Por favor, tente novamente.'),
+        ),
+      );
     }
   }
 
@@ -199,8 +203,6 @@ class CalendarState extends State<Calendar> {
                           selectedDay = day; // Atualiza o dia selecionado
                         });
                         await fetchData();
-
-                        print(activities.map((e) => e['description']));
                       },
                       child: Container(
                         padding: const EdgeInsets.all(15.0),
@@ -231,6 +233,34 @@ class CalendarState extends State<Calendar> {
                     String dataHoraEnd = e['end'];
                     String parteInteressanteEnd = dataHoraEnd.substring(11, 16);
 
+                    // ignore: unused_local_variable, non_constant_identifier_names
+                    final ActivityPageArguments = [
+                      {'nome': e['title']['pt-br']},
+                      {'Horas': '$dataHoraStart - $parteInteressanteEnd'},
+                      {
+                        'locations':
+                            e['locations'].map((e) => {e['title']['pt-br']})
+                      },
+                      {'description': e['description']['pt-br']},
+                      {
+                        'peoplelabel': e['people']
+                            .map((e) => {e['role']['label']['pt-br']})
+                      },
+                      {
+                        'peopleName':
+                            e['people'].map((person) => person['name'])
+                      },
+                      {
+                        'peopleUniversity':
+                            e['people'].map((person) => person['institution'])
+                      },
+                      {
+                        'peoplePicture': e['people'].map((e) => {e['picture']})
+                      }
+                    ];
+
+                    print(ActivityPageArguments[7]['peoplePicture']);
+
                     return Container(
                         alignment: Alignment.centerLeft,
                         padding: const EdgeInsets.all(10),
@@ -245,32 +275,63 @@ class CalendarState extends State<Calendar> {
                             ),
                           ),
                         ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              '${e['type']['title']['pt-br']} de $parteInteressanteStart até $parteInteressanteEnd',
-                              style: const TextStyle(
-                                fontSize: 10, // Tamanho da fonte
-                                fontWeight: FontWeight.w500, // Peso da fonte
-                              ),
-                            ),
-                            Text(
-                              '${e['title']['pt-br']}',
-                              style: const TextStyle(
-                                fontSize: 15, // Tamanho da fonte
-                                fontWeight: FontWeight.w500, // Peso da fonte
-                              ),
-                            ),
-                            Text(
-                              '${e['people'].map((person) => person['name']).join(', ')}',
-                              style: const TextStyle(
-                                fontSize: 12, // Tamanho da fonte
-                                fontWeight: FontWeight.w300, // Peso da fonte
-                              ),
-                            )
-                          ],
-                        ));
+                        child: GestureDetector(
+                            onTap: () => {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => ActivityPage(
+                                              title: e['title']['pt-br'],
+                                              horas:
+                                                  'Domingo $parteInteressanteStart - $parteInteressanteEnd',
+                                              locations: e['locations'].map(
+                                                  (e) => {e['title']['pt-br']}),
+                                              description: e['description']
+                                                  ['pt-br'],
+                                              peopleLabel: e['people'].map(
+                                                  (e) => {
+                                                        e['role']['label']
+                                                            ['pt-br']
+                                                      }),
+                                              peopleName: e['people'].map(
+                                                  (person) => person['name']),
+                                              peopleUniversity: e['people'].map(
+                                                  (person) =>
+                                                      person['institution']),
+                                              peoplePicture: e['people']
+                                                  .map((e) => {e['picture']}),
+                                            )), // Passar a resposta como parâmetro
+                                  )
+                                },
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '${e['type']['title']['pt-br']} de $parteInteressanteStart até $parteInteressanteEnd',
+                                  style: const TextStyle(
+                                    fontSize: 10, // Tamanho da fonte
+                                    fontWeight:
+                                        FontWeight.w500, // Peso da fonte
+                                  ),
+                                ),
+                                Text(
+                                  '${e['title']['pt-br']}',
+                                  style: const TextStyle(
+                                    fontSize: 15, // Tamanho da fonte
+                                    fontWeight:
+                                        FontWeight.w500, // Peso da fonte
+                                  ),
+                                ),
+                                Text(
+                                  '${e['people'].map((person) => person['name']).join(', ')}',
+                                  style: const TextStyle(
+                                    fontSize: 12, // Tamanho da fonte
+                                    fontWeight:
+                                        FontWeight.w300, // Peso da fonte
+                                  ),
+                                )
+                              ],
+                            )));
                   }).toList(),
                 ),
               ),
