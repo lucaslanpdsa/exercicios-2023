@@ -1,5 +1,6 @@
 // ignore_for_file: file_names, prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:chuva_dart/people.dart';
 import 'package:flutter/material.dart';
 
 class ActivityPage extends StatefulWidget {
@@ -7,10 +8,11 @@ class ActivityPage extends StatefulWidget {
   final String horas;
   final dynamic locations;
   final String description;
+  final dynamic peopleUniversity;
   final dynamic peopleLabel;
   final dynamic peopleName;
-  final dynamic peopleUniversity;
   final dynamic peoplePicture;
+  final dynamic peopleBio;
 
   const ActivityPage({
     super.key,
@@ -18,10 +20,11 @@ class ActivityPage extends StatefulWidget {
     required this.horas,
     required this.locations,
     required this.description,
+    required this.peopleUniversity,
     required this.peopleLabel,
     required this.peopleName,
-    required this.peopleUniversity,
     required this.peoplePicture,
+    required this.peopleBio,
   });
 
   @override
@@ -149,57 +152,71 @@ class ActivityPageState extends State<ActivityPage> {
                 style: TextStyle(),
               ),
             ),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 5),
-                    child: SizedBox(
-                      width: double.infinity,
-                      child: Text(
-                        widget.peopleLabel
-                            .toString()
-                            .replaceAll(RegExp(r'[()\[\]{}]'), ''),
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w500,
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => PeoplePage(
+                            peopleUniversity: widget.peopleUniversity,
+                            peoplePicture: widget.peoplePicture,
+                            peopleName: widget.peopleName,
+                            peopleBio: widget.peopleBio,
+                          )),
+                );
+              },
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 5),
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: Text(
+                          widget.peopleLabel
+                              .toString()
+                              .replaceAll(RegExp(r'[()\[\]{}]'), ''),
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  Row(
-                    children: [
-                      SizedBox(
-                        width: 100, // Defina a largura máxima da imagem aqui
-                        child: CircleAvatar(
-                          radius: 50,
-                          backgroundImage: NetworkImage(widget.peoplePicture
-                              .toString()
-                              .replaceAll(RegExp(r'[()\[\]{}]'), '')),
+                    Row(
+                      children: [
+                        SizedBox(
+                          width: 100, // Defina a largura máxima da imagem aqui
+                          child: CircleAvatar(
+                            radius: 50,
+                            backgroundImage: NetworkImage(widget.peoplePicture
+                                .toString()
+                                .replaceAll(RegExp(r'[()\[\]{}]'), '')),
+                          ),
                         ),
-                      ),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              widget.peopleName
-                                  .toString()
-                                  .replaceAll(RegExp(r'[()\[\]{}]'), ''),
-                            ),
-                            Text(
-                              widget.peopleLabel.toString().replaceAll(
-                                  RegExp(r'[()\[\]{}]'),
-                                  ''), // Definindo o alinhamento do texto
-                            ),
-                          ],
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                widget.peopleName
+                                    .toString()
+                                    .replaceAll(RegExp(r'[()\[\]{}]'), ''),
+                              ),
+                              Text(
+                                widget.peopleLabel.toString().replaceAll(
+                                    RegExp(r'[()\[\]{}]'),
+                                    ''), // Definindo o alinhamento do texto
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ],

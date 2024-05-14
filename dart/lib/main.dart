@@ -233,34 +233,6 @@ class CalendarState extends State<Calendar> {
                     String dataHoraEnd = e['end'];
                     String parteInteressanteEnd = dataHoraEnd.substring(11, 16);
 
-                    // ignore: unused_local_variable, non_constant_identifier_names
-                    final ActivityPageArguments = [
-                      {'nome': e['title']['pt-br']},
-                      {'Horas': '$dataHoraStart - $parteInteressanteEnd'},
-                      {
-                        'locations':
-                            e['locations'].map((e) => {e['title']['pt-br']})
-                      },
-                      {'description': e['description']['pt-br']},
-                      {
-                        'peoplelabel': e['people']
-                            .map((e) => {e['role']['label']['pt-br']})
-                      },
-                      {
-                        'peopleName':
-                            e['people'].map((person) => person['name'])
-                      },
-                      {
-                        'peopleUniversity':
-                            e['people'].map((person) => person['institution'])
-                      },
-                      {
-                        'peoplePicture': e['people'].map((e) => {e['picture']})
-                      }
-                    ];
-
-                    print(ActivityPageArguments[7]['peoplePicture']);
-
                     return Container(
                         alignment: Alignment.centerLeft,
                         padding: const EdgeInsets.all(10),
@@ -300,6 +272,10 @@ class CalendarState extends State<Calendar> {
                                                       person['institution']),
                                               peoplePicture: e['people']
                                                   .map((e) => {e['picture']}),
+                                              peopleBio: e['people'].map((e) =>
+                                                  {
+                                                    e['bio']['pt-br'].toString()
+                                                  }),
                                             )), // Passar a resposta como parâmetro
                                   )
                                 },
